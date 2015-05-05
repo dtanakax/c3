@@ -14,7 +14,6 @@ c3_chart_fn.destroy = function () {
     var $$ = this.internal;
 
     window.clearInterval($$.intervalForObserveInserted);
-    window.onresize = null;
 
     $$.selectChart.classed('c3', false).html("");
 

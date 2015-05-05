@@ -268,7 +268,7 @@ Axis.prototype.textAnchorForY2AxisLabel = function textAnchorForY2AxisLabel() {
 };
 Axis.prototype.getMaxTickWidth = function getMaxTickWidth(id, withoutRecompute) {
     var $$ = this.owner, config = $$.config,
-        maxWidth = 0, targetsToShow, scale, axis, dummy, svg;
+        maxWidth = 0, targetsToShow, scale, axis;
     if (withoutRecompute && $$.currentMaxTickWidths[id]) {
         return $$.currentMaxTickWidths[id];
     }
@@ -285,15 +285,9 @@ Axis.prototype.getMaxTickWidth = function getMaxTickWidth(id, withoutRecompute) 
             axis = this.getXAxis(scale, $$.xOrient, $$.xAxisTickFormat, $$.xAxisTickValues, false, true, true);
             this.updateXAxisTickValues(targetsToShow, axis);
         }
-        dummy = $$.d3.select('body').append('div').classed('c3', true);
-        svg = dummy.append("svg").style('visibility', 'hidden').style('position', 'fixed').style('top', 0).style('left', 0),
-        svg.append('g').call(axis).each(function () {
-            $$.d3.select(this).selectAll('text').each(function () {
-                var box = this.getBoundingClientRect();
-                if (maxWidth < box.width) { maxWidth = box.width; }
-            });
-            dummy.remove();
-        });
+
+        // TODO: getBoundingClientRect is heavy processing. Temporarily Fix
+        maxWidth = 35;
     }
     $$.currentMaxTickWidths[id] = maxWidth <= 0 ? $$.currentMaxTickWidths[id] : maxWidth;
     return $$.currentMaxTickWidths[id];
